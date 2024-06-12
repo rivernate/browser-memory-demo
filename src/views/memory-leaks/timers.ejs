@@ -11,20 +11,6 @@
             flex-direction: column;
             align-items: center;
         }
-        .visual {
-            width: 300px;
-            height: 300px;
-            background-color: #e2e2e2;
-            margin: 20px 0;
-            position: relative;
-            overflow: auto;
-        }
-        .block {
-            width: 20px;
-            height: 20px;
-            background-color: #007bff;
-            position: absolute;
-        }
         .description {
             text-align: left;
             max-width: 600px;
@@ -36,6 +22,13 @@
             overflow: auto;
             max-width: 600px;
         }
+        .heap-size {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -43,21 +36,20 @@
         <h1>Timers Memory Leak</h1>
         <div class="description">
             <p><strong>Explanation:</strong> A timers leak occurs when timers (setInterval, setTimeout) are not properly cleared. These timers keep references to their callback functions and any variables used within those functions, preventing garbage collection.</p>
-            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by the timer. Each interval adds more blocks, simulating increasing memory usage due to the timer not being cleared.</p>
             <p><strong>Example Code:</strong></p>
             <pre>
 function startTimer() {
     setInterval(() => {
         console.log('Timer leak');
-        // Simulate memory usage
-        const leakArray = new Array(1000).fill('leak');
-    }, 1000); // Timer that is never cleared
+        // Simulate significant memory usage
+        const leakArray = new Array(100000).fill('leak');
+    }, 100); // Timer that is never cleared, running more frequently
 }
             </pre>
         </div>
         <button id="start-button">Start Leak</button>
         <div id="output"></div>
-        <div class="visual" id="visual"></div>
+        <div id="heap-size" class="heap-size">Heap Size: N/A</div>
     </div>
     <script src="/js/timers.js"></script>
 </body>

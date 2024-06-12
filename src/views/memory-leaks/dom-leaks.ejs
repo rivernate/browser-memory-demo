@@ -11,20 +11,6 @@
             flex-direction: column;
             align-items: center;
         }
-        .visual {
-            width: 300px;
-            height: 300px;
-            background-color: #e2e2e2;
-            margin: 20px 0;
-            position: relative;
-            overflow: auto;
-        }
-        .block {
-            width: 20px;
-            height: 20px;
-            background-color: #007bff;
-            position: absolute;
-        }
         .description {
             text-align: left;
             max-width: 600px;
@@ -36,6 +22,13 @@
             overflow: auto;
             max-width: 600px;
         }
+        .heap-size {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -43,24 +36,23 @@
         <h1>DOM Leaks Memory Leak</h1>
         <div class="description">
             <p><strong>Explanation:</strong> A DOM leak occurs when references to DOM elements are retained even after those elements have been removed from the document. This can prevent garbage collection and lead to increased memory usage.</p>
-            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by DOM elements. Each time an element is removed from the DOM, it is still referenced in JavaScript, simulating a leak.</p>
             <p><strong>Example Code:</strong></p>
             <pre>
-function removeElements() {
-    const elements = [];
+let elements = [];
+
+function createAndRemoveElements() {
     for (let i = 0; i < 1000; i++) {
-        const div = document.createElement('div');
-        div.className = 'leak';
-        document.body.appendChild(div);
-        elements.push(div); // Keeping a reference to the DOM element
-        document.body.removeChild(div); // Removing it from the DOM
+        const element = document.createElement('div');
+        document.body.appendChild(element);
+        elements.push(element); // Reference is kept
+        document.body.removeChild(element); // Removed from DOM
     }
 }
             </pre>
         </div>
         <button id="start-button">Start Leak</button>
         <div id="output"></div>
-        <div class="visual" id="visual"></div>
+        <div id="heap-size" class="heap-size">Heap Size: N/A</div>
     </div>
     <script src="/js/dom-leaks.js"></script>
 </body>

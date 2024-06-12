@@ -11,20 +11,6 @@
             flex-direction: column;
             align-items: center;
         }
-        .visual {
-            width: 300px;
-            height: 300px;
-            background-color: #e2e2e2;
-            margin: 20px 0;
-            position: relative;
-            overflow: auto;
-        }
-        .block {
-            width: 20px;
-            height: 20px;
-            background-color: #007bff;
-            position: absolute;
-        }
         .description {
             text-align: left;
             max-width: 600px;
@@ -36,6 +22,13 @@
             overflow: auto;
             max-width: 600px;
         }
+        .heap-size {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +36,6 @@
         <h1>Circular References Memory Leak</h1>
         <div class="description">
             <p><strong>Explanation:</strong> A circular reference leak occurs when two or more objects reference each other, creating a cycle. This prevents garbage collection from freeing up the memory used by these objects.</p>
-            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by objects referencing each other. Each time the button is clicked, more blocks are added, simulating increasing memory usage due to the circular references.</p>
             <p><strong>Example Code:</strong></p>
             <pre>
 function createCircularReference() {
@@ -54,9 +46,9 @@ function createCircularReference() {
 }
             </pre>
         </div>
-        <button id="start-button">Create Circular References</button>
+        <button id="start-button">Start Leak</button>
         <div id="output"></div>
-        <div class="visual" id="visual"></div>
+        <div id="heap-size" class="heap-size">Heap Size: N/A</div>
     </div>
     <script src="/js/circular-references.js"></script>
 </body>

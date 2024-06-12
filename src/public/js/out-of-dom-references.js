@@ -1,23 +1,42 @@
-document.getElementById('start-button').addEventListener('click', () => {
-    let removedElements = [];
+let leakCount = 0;
+const removedElements = [];
 
+document.getElementById('start-button').addEventListener('click', () => {
     function createAndRemoveElements() {
-        const visual = document.getElementById('visual');
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < 100000 * leakCount; i++) {
             const element = document.createElement('div');
-            element.className = 'block';
-            element.style.top = `${Math.random() * 280}px`;
-            element.style.left = `${Math.random() * 280}px`;
             document.body.appendChild(element);
             removedElements.push(element); // Reference is kept
             document.body.removeChild(element); // Removed from DOM
-            // Visual feedback
-            visual.appendChild(element);
         }
-        document.getElementById('output').innerText = 'Out-of-DOM reference leak created.';
-        console.log('Out-of-DOM reference leak created.');
+        document.getElementById('output').innerText = `Out-of-DOM reference leak #${leakCount} created.`;
+        console.log(`Out-of-DOM reference leak #${leakCount} created.`);
     }
 
+    leakCount++;
     createAndRemoveElements();
+    updateHeapSize();
+    document.getElementById('start-button').textContent = `Start Leak (${leakCount} times)`;
 });
+
+function updateHeapSize() {
+    if (performance.memory) {
+        const heapSizeElement = document.getElementById('heap-size');
+        setInterval(() => {
+            const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
+            heapSizeElement.textContent = `Heap Size: ${formatBytes(usedJSHeapSize)} / ${formatBytes(totalJSHeapSize)} (Limit: ${formatBytes(jsHeapSizeLimit)})`;
+        }, 1000);
+    } else {
+        console.warn('performance.memory is not supported in this browser.');
+    }
+}
+
+function formatBytes(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+}
+
+updateHeapSize();
 

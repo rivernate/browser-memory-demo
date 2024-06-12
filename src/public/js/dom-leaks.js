@@ -1,22 +1,20 @@
 let leakCount = 0;
-const objects = [];
+const elements = [];
 
 document.getElementById('start-button').addEventListener('click', () => {
-    function createCircularReference() {
-        const objA = {};
-        const objB = {};
-        objA.b = objB;
-        objB.a = objA; // Circular reference
-        objects.push(objA, objB); // Keep reference to simulate leak
+    function createAndRemoveElements() {
+        for (let i = 0; i < 100000; i++) {
+            const element = document.createElement('div');
+            document.body.appendChild(element);
+            elements.push(element); // Reference is kept
+            document.body.removeChild(element); // Removed from DOM
+        }
+        document.getElementById('output').innerText = `DOM leak #${leakCount} created.`;
+        console.log(`DOM leak #${leakCount} created.`);
     }
 
-    for (let i = 0; i < 10000 * leakCount; i++) {
-        createCircularReference();
-    }
     leakCount++;
-    document.getElementById('output').innerText = `Circular reference leak #${leakCount} created.`;
-    console.log(`Circular reference leak #${leakCount} created.`);
-
+    createAndRemoveElements();
     updateHeapSize();
     document.getElementById('start-button').textContent = `Start Leak (${leakCount} times)`;
 });

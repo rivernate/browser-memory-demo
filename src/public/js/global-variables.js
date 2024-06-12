@@ -1,19 +1,41 @@
+let leakCount = 0;
+
 document.getElementById('start-button').addEventListener('click', () => {
-    function startTimer() {
-        const visual = document.getElementById('visual');
-        setInterval(() => {
-            console.log('Timer leak');
-            // Visual feedback
-            const block = document.createElement('div');
-            block.className = 'block';
-            block.style.top = `${Math.random() * 280}px`;
-            block.style.left = `${Math.random() * 280}px`;
-            visual.appendChild(block);
-        }, 1000); // Timer that is never cleared
-        document.getElementById('output').innerText = 'Timer leak created.';
-        console.log('Timer leak created.');
+    function addItems() {
+        if (!window.leakArray) {
+            window.leakArray = []; // Create global variable if it doesn't exist
+        }
+        for (let i = 0; i < 100000 * leakCount; i++) {
+            leakArray.push(new Array(1000).fill('leak'));
+        }
+        document.getElementById('output').innerText = `Global variable leak #${leakCount} created.`;
+        console.log(`Global variable leak #${leakCount} created.`);
     }
 
-    startTimer();
+    leakCount++;
+    addItems();
+    updateHeapSize();
+    document.getElementById('start-button').textContent = `Start Leak (${leakCount} times)`;
 });
+
+function updateHeapSize() {
+    if (performance.memory) {
+        const heapSizeElement = document.getElementById('heap-size');
+        setInterval(() => {
+            const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
+            heapSizeElement.textContent = `Heap Size: ${formatBytes(usedJSHeapSize)} / ${formatBytes(totalJSHeapSize)} (Limit: ${formatBytes(jsHeapSizeLimit)})`;
+        }, 1000);
+    } else {
+        console.warn('performance.memory is not supported in this browser.');
+    }
+}
+
+function formatBytes(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+}
+
+updateHeapSize();
 
