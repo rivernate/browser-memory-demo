@@ -1,0 +1,24 @@
+document.getElementById('start-button').addEventListener('click', () => {
+    function createClosure() {
+        const visual = document.getElementById('visual');
+        const largeArray = new Array(1000).fill('leak');
+        return function() {
+            console.log('Closure leak');
+            // Visual feedback
+            const block = document.createElement('div');
+            block.className = 'block';
+            block.style.top = `${Math.random() * 280}px`;
+            block.style.left = `${Math.random() * 280}px`;
+            visual.appendChild(block);
+            return largeArray;
+        };
+    }
+
+    const leakyFunction = createClosure();
+    setInterval(() => {
+        leakyFunction();
+    }, 1000);
+    document.getElementById('output').innerText = 'Closure leak created.';
+    console.log('Closure leak created.');
+});
+

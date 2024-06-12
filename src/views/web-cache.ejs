@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Cache Example</title>
+</head>
+<body>
+    <h1>Web Cache Example</h1>
+    <h2>Not Functional</h2>
+    <img id="largeImage" src="/path/to/large-image.jpg" alt="Large Image Example">
+    <script>
+        if ('caches' in window) {
+            caches.open('web-cache-example').then(cache => {
+                // Cache a large image
+                cache.add('/path/to/large-image.jpg').then(() => {
+                    console.log('Large image cached');
+                }).catch(error => {
+                    console.error('Failed to cache image:', error);
+                });
+
+                // Cache a large script
+                cache.add('/path/to/large-script.js').then(() => {
+                    console.log('Large script cached');
+                }).catch(error => {
+                    console.error('Failed to cache script:', error);
+                });
+
+                // Log all cached resources
+                cache.keys().then(keys => {
+                    keys.forEach(key => {
+                        console.log('Cached resource:', key.url);
+                    });
+                });
+            }).catch(error => {
+                console.error('Failed to open cache:', error);
+            });
+        } else {
+            console.error('Caching is not supported in this browser');
+        }
+    </script>
+</body>
+</html>
+

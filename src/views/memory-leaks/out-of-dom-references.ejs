@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Out-of-DOM References Memory Leak</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .visual {
+            width: 300px;
+            height: 300px;
+            background-color: #e2e2e2;
+            margin: 20px 0;
+            position: relative;
+            overflow: auto;
+        }
+        .block {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            position: absolute;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Out-of-DOM References Memory Leak</h1>
+        <div class="description">
+            <p><strong>Explanation:</strong> An out-of-DOM reference leak occurs when DOM elements are removed from the document but are still referenced in JavaScript. This prevents the elements from being garbage collected, leading to increased memory usage.</p>
+            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by DOM elements that are removed from the document but still referenced. Each time the button is clicked, more blocks are added, simulating increasing memory usage due to out-of-DOM references.</p>
+            <p><strong>Example Code:</strong></p>
+            <pre>
+let removedElements = [];
+
+function createAndRemoveElements() {
+    for (let i = 0; i < 1000; i++) {
+        const element = document.createElement('div');
+        document.body.appendChild(element);
+        removedElements.push(element); // Reference is kept
+        document.body.removeChild(element); // Removed from DOM
+    }
+}
+            </pre>
+        </div>
+        <button id="start-button">Start Leak</button>
+        <div id="output"></div>
+        <div class="visual" id="visual"></div>
+    </div>
+    <script src="/js/out-of-dom-references.js"></script>
+</body>
+</html>
+

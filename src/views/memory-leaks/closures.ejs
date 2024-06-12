@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Closures Memory Leak</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .visual {
+            width: 300px;
+            height: 300px;
+            background-color: #e2e2e2;
+            margin: 20px 0;
+            position: relative;
+            overflow: auto;
+        }
+        .block {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            position: absolute;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Closures Memory Leak</h1>
+        <div class="description">
+            <p><strong>Explanation:</strong> A closures leak occurs when functions maintain references to variables in their containing scope. If these variables are no longer needed, the references prevent garbage collection.</p>
+            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by the closure. Each interval adds more blocks, simulating increasing memory usage due to the closure holding onto references.</p>
+            <p><strong>Example Code:</strong></p>
+            <pre>
+function createClosure() {
+    const largeArray = new Array(1000).fill('leak');
+    return function() {
+        console.log('Closure leak');
+        return largeArray;
+    };
+}
+
+const leakyFunction = createClosure();
+setInterval(() => {
+    leakyFunction();
+}, 1000);
+            </pre>
+        </div>
+        <button id="start-button">Start Leak</button>
+        <div id="output"></div>
+        <div class="visual" id="visual"></script>
+    </div>
+    <script src="/js/closures.js"></script>
+</body>
+</html>
+

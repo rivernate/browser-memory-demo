@@ -1,0 +1,22 @@
+document.getElementById('start-button').addEventListener('click', () => {
+    function removeElements() {
+        const visual = document.getElementById('visual');
+        const elements = [];
+        for (let i = 0; i < 1000; i++) {
+            const div = document.createElement('div');
+            div.className = 'block';
+            div.style.top = `${Math.random() * 280}px`;
+            div.style.left = `${Math.random() * 280}px`;
+            document.body.appendChild(div);
+            elements.push(div); // Keeping a reference to the DOM element
+            document.body.removeChild(div); // Removing it from the DOM
+            // Visual feedback
+            visual.appendChild(div);
+        }
+        document.getElementById('output').innerText = 'DOM leak created.';
+        console.log('DOM leak created.');
+    }
+
+    removeElements();
+});
+

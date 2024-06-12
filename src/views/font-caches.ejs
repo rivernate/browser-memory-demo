@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Font Caches Example</title>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lobster&display=swap"
+    rel="stylesheet">
+  <!-- Adobe Fonts -->
+  <link rel="stylesheet" href="https://use.typekit.net/xyz123.css">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .text-sample {
+      font-size: 24px;
+      margin: 20px;
+    }
+
+    .font-roboto {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .font-opensans {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .font-lobster {
+      font-family: 'Lobster', cursive;
+    }
+
+    .font-adobe1 {
+      font-family: 'AdobeFont1', sans-serif;
+    }
+
+    .font-adobe2 {
+      font-family: 'AdobeFont2', sans-serif;
+    }
+
+    .font-bold {
+      font-family: system-ui;
+      font-weight: 700;
+    }
+
+    .font-italic {
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Font Caches Example</h1>
+
+  <h2>Not Working Currently</h2>
+
+  <h2>Instructions for Using chrome://tracing</h2>
+  <ol>
+    <li>Open a new tab in Chrome and navigate to <code>chrome://tracing</code>.</li>
+    <li>
+      Start recording:
+      <ul>
+        <li>Click on "Record" or press Ctrl+R.</li>
+        <li>In the "Categories" tab, ensure you have selected appropriate categories related to memory, such as
+          <code>blink</code>, <code>cc</code>, <code>fonts</code>, <code>v8</code>, <code>memory-infra</code>, and
+          <code>disabled-by-default-blink.fonts</code>.</li>
+        <li>Click on "Record" to start capturing the trace.</li>
+      </ul>
+    </li>
+    <li>
+      Interact with the page:
+      <ul>
+        <li>Load this page in another tab (<code>http://localhost:3000/font-caches</code> if you're following the
+          directory structure from the earlier setup).</li>
+        <li>Click on the "Load Text" button to load the text elements.</li>
+        <li>Wait for a few seconds to ensure all text elements are loaded and rendered.</li>
+        <li>Click on the "Discard Text" button to remove the text elements from the DOM.</li>
+      </ul>
+    </li>
+    <li>
+      Stop recording:
+      <ul>
+        <li>Switch back to the <code>chrome://tracing</code> tab.</li>
+        <li>Click on "Stop" to end the trace recording.</li>
+      </ul>
+    </li>
+    <li>
+      Analyze the trace:
+      <ul>
+        <li>Look for memory usage patterns in the trace.</li>
+        <li>Identify the moments when text elements are loaded and discarded.</li>
+        <li>Check the <code>fonts</code> and <code>memory-infra</code> categories to see how the memory is used and
+          released.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h3>Notes</h3>
+  <ul>
+    <li><strong>Number of Text Elements:</strong> The example loads 1000 text elements to ensure noticeable memory
+      usage. Adjust the number of elements if needed.</li>
+    <li><strong>Web Fonts:</strong> This example uses multiple web fonts from Google Fonts and Adobe Fonts.</li>
+    <li><strong>Font Cache:</strong> Removing elements from the DOM does not immediately clear the font cache; the
+      browser manages this automatically.</li>
+  </ul>
+
+  <div id="text-container"></div>
+  <button id="load-text">Load Text</button>
+  <button id="discard-text">Discard Text</button>
+
+  <script>
+    const textContainer = document.getElementById('text-container');
+    const loadTextButton = document.getElementById('load-text');
+    const discardTextButton = document.getElementById('discard-text');
+
+    const textCount = 1000;
+    let textElements = [];
+
+    const sampleTexts = [
+      "The quick brown fox jumps over the lazy dog.",
+      "Sphinx of black quartz, judge my vow.",
+      "Pack my box with five dozen liquor jugs.",
+      "Jackdaws love my big sphinx of quartz.",
+      "The five boxing wizards jump quickly.",
+      "How razorback-jumping frogs can level six piqued gymnasts!",
+      "Sympathizing would fix Quaker objectives.",
+      "Back in June we delivered oxygen equipment of the same size.",
+      "We promptly judged antique ivory buckles for the next prize.",
+      "Crazy Frederick bought many very exquisite opal jewels.",
+      "☺ ☻ ♥ ♦ ♣ ♠ • ◘ ○",
+      "¡™£¢∞§¶•ªº–≠",
+      "Œ∑´®†¥¨ˆøπ“‘",
+      "¡™£¢∞§¶•ªº–≠"
+    ];
+
+    loadTextButton.addEventListener('click', () => {
+      for (let i = 0; i < textCount; i++) {
+        const div = document.createElement('div');
+        div.className = 'text-sample';
+        if (i % 5 === 0) {
+          div.classList.add('font-roboto');
+        } else if (i % 5 === 1) {
+          div.classList.add('font-opensans');
+        } else if (i % 5 === 2) {
+          div.classList.add('font-lobster');
+        } else if (i % 5 === 3) {
+          div.classList.add('font-adobe1');
+        } else {
+          div.classList.add('font-adobe2');
+        }
+        if (i % 7 === 0) {
+          div.classList.add('font-bold');
+        }
+        if (i % 11 === 0) {
+          div.classList.add('font-italic');
+        }
+        div.textContent = sampleTexts[i % sampleTexts.length];
+        textContainer.appendChild(div);
+        textElements.push(div);
+      }
+      console.log(`Loaded ${textCount} text elements.`);
+    });
+
+    discardTextButton.addEventListener('click', () => {
+      textElements.forEach(div => {
+        textContainer.removeChild(div);
+      });
+      textElements = [];
+      console.log(`Discarded ${textCount} text elements.`);
+    });
+  </script>
+</body>
+
+</html>

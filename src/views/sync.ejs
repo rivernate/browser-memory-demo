@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sync Memory Example</title>
+</head>
+<body>
+    <h1>Sync Memory Example</h1>
+    <h2>Not Functional</h2>
+    <script>
+        // Simulating sync with local storage
+        const syncData = { key: 'syncExample', value: 'Chrome Sync Example Data' };
+        localStorage.setItem(syncData.key, syncData.value);
+
+        document.body.innerHTML += `<p>Synced data: ${localStorage.getItem(syncData.key)}</p>`;
+    </script>
+</body>
+</html>
+

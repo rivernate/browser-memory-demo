@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accidental References Memory Leak</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .visual {
+            width: 300px;
+            height: 300px;
+            background-color: #e2e2e2;
+            margin: 20px 0;
+            position: relative;
+            overflow: auto;
+        }
+        .block {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            position: absolute;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Accidental References Memory Leak</h1>
+        <div class="description">
+            <p><strong>Explanation:</strong> An accidental reference leak occurs when objects are unintentionally kept in memory because references to them are not properly cleared. This can happen if references are kept in closures, event listeners, or global variables.</p>
+            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by objects that are unintentionally kept in memory. Each time the button is clicked, more blocks are added, simulating increasing memory usage due to accidental references.</p>
+            <p><strong>Example Code:</strong></p>
+            <pre>
+let elements = [];
+
+function addElements() {
+    for (let i = 0; i < 1000; i++) {
+        const element = document.createElement('div');
+        element.className = 'leak';
+        document.body.appendChild(element);
+        elements.push(element); // Accidental reference
+    }
+}
+
+function removeElements() {
+    for (let i = 0; i < elements.length; i++) {
+        document.body.removeChild(elements[i]);
+    }
+    // Oops! We forgot to clear the 'elements' array
+}
+            </pre>
+        </div>
+        <button id="start-button">Start Leak</button>
+        <div id="output"></div>
+        <div class="visual" id="visual"></div>
+    </div>
+    <script src="/js/accidental-references.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blink GC Example</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('container');
+            for (let i = 0; i < 10000; i++) {
+                const div = document.createElement('div');
+                div.textContent = `Element ${i}`;
+                container.appendChild(div);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Blink GC Example</h1>
+    <div id="container"></div>
+</body>
+</html>
+

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Third-Party Libraries Memory Leak</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .visual {
+            width: 300px;
+            height: 300px;
+            background-color: #e2e2e2;
+            margin: 20px 0;
+            position: relative;
+            overflow: auto;
+        }
+        .block {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            position: absolute;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Third-Party Libraries Memory Leak</h1>
+        <div class="description">
+            <p><strong>Explanation:</strong> Memory leaks can occur when using third-party libraries, especially if those libraries manage resources like DOM nodes or event listeners and the resources are not properly cleaned up. This can prevent garbage collection and lead to increased memory usage.</p>
+            <p><strong>Visualization:</strong> The blue blocks represent memory being allocated by third-party library elements. Each time the button is clicked, more blocks are added, simulating increasing memory usage due to resources not being cleaned up.</p>
+            <p><strong>Example Code:</strong></p>
+            <pre>
+function useThirdPartyLibrary() {
+    const elements = [];
+    for (let i = 0; i < 1000; i++) {
+        const element = document.createElement('div');
+        thirdPartyLibrary.manageElement(element); // Hypothetical third-party library call
+        elements.push(element); // Accidental reference
+    }
+}
+            </pre>
+        </div>
+        <button id="start-button">Start Leak</button>
+        <div id="output"></div>
+        <div class="visual" id="visual"></div>
+    </div>
+    <script src="/js/third-party-libraries.js"></script>
+</body>
+</html>
+
