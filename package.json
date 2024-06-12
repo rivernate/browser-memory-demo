@@ -6,9 +6,13 @@
   "scripts": {
     "start": "ts-node src/app.ts"
   },
-  "keywords": [],
+  "keywords": ["memory-leak", "demonstration", "web-application", "node.js", "express", "typescript"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rivernate/browser-memory-demo.git"
+  },
   "dependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.2",

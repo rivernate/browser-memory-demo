@@ -1,100 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Memory Demonstration</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #343a40;
-        }
-        .container {
-            margin: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            width: 100%;
-            text-align: center;
-        }
-        .section {
-            margin: 20px 0;
-            padding: 20px;
-            width: 100%;
-            max-width: 800px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .section h2 {
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        .list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            list-style-type: none;
-            padding: 0;
-        }
-        .list li {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-radius: 4px;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        .list li a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 18px;
-        }
-        .list li:hover {
-            background-color: #e2e2e2;
-        }
-        footer {
-            margin-top: 20px;
-            padding: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            color: #6c757d;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Memory Demonstration</h1>
-    </header>
-    <div class="container">
-        <div class="section">
-            <h2>Memory Areas</h2>
-            <ul class="list">
-                <% memoryAreas.forEach(area => { %>
-                    <li><a href="/<%= area %>"><%= area.replace('-', ' ').toUpperCase() %></a></li>
-                <% }) %>
-            </ul>
-        </div>
-        <div class="section">
-            <h2>Memory Leaks</h2>
-            <ul class="list">
-                <% memoryLeakTypes.forEach(type => { %>
-                    <li><a href="/memory-leaks/<%= type %>"><%= type.replace('-', ' ').toUpperCase() %></a></li>
-                <% }) %>
-            </ul>
-        </div>
-    </div>
-    <footer>
-        &copy; <%= new Date().getFullYear() %> Memory Demonstration. All rights reserved.
-    </footer>
-</body>
-</html>
 
+<head>
+  <meta charset="UTF-8">
+  <title>Memory Demonstration</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+  <%- include('partials/header.ejs') %>
+    <main class="container">
+      <section class="section">
+        <h2>Memory Areas</h2>
+        <ul class="list">
+          <% memoryAreas.forEach(area=> { %>
+            <li><a href="/<%= area %>" data-area="<%= area %>">
+                <%= area.replace('-', ' ' ).toUpperCase() %>
+              </a></li>
+            <% }) %>
+        </ul>
+      </section>
+      <section class="section">
+        <h2>Memory Leaks</h2>
+        <ul class="list">
+          <% memoryLeakTypes.forEach(type=> { %>
+            <li><a href="/memory-leaks/<%= type %>" data-type="<%= type %>">
+                <%= type.replace('-', ' ' ).toUpperCase() %>
+              </a></li>
+            <% }) %>
+        </ul>
+      </section>
+      <section class="section">
+        <h2>JS Heap Daigram</h2>
+        <svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Define arrow markers -->
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" />
+            </marker>
+          </defs>
+
+          <!-- Root Node -->
+          <circle cx="300" cy="50" r="30" fill="yellow" />
+          <text x="300" y="50" text-anchor="middle" dy=".3em" font-weight="bold">Root</text>
+
+          <!-- Object1 Node -->
+          <circle cx="200" cy="150" r="30" fill="skyblue" />
+          <text x="200" y="150" text-anchor="middle" dy=".3em" font-weight="bold">Object1</text>
+
+          <!-- Array1 Node -->
+          <circle cx="400" cy="150" r="30" fill="skyblue" />
+          <text x="400" y="150" text-anchor="middle" dy=".3em" font-weight="bold">Array1</text>
+
+          <!-- Function1 Node -->
+          <circle cx="300" cy="250" r="30" fill="lightgreen" />
+          <text x="300" y="250" text-anchor="middle" dy=".3em" font-weight="bold">Function1</text>
+
+          <!-- Garbage Nodes -->
+          <circle cx="150" cy="300" r="30" fill="lightcoral" />
+          <text x="150" y="300" text-anchor="middle" dy=".3em" font-weight="bold">Garbage1</text>
+
+          <circle cx="450" cy="300" r="30" fill="lightcoral" />
+          <text x="450" y="300" text-anchor="middle" dy=".3em" font-weight="bold">Garbage2</text>
+
+          <!-- Edges -->
+          <line x1="300" y1="80" x2="200" y2="120" stroke="gray" stroke-width="2" marker-end="url(#arrowhead)" />
+          <line x1="300" y1="80" x2="400" y2="120" stroke="gray" stroke-width="2" marker-end="url(#arrowhead)" />
+          <line x1="300" y1="80" x2="300" y2="220" stroke="gray" stroke-width="2" marker-end="url(#arrowhead)" />
+        </svg>
+      </section>
+      <section class="section">
+        <h2>Oilpan and JS Heap</h2 <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+        <svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Title -->
+          <text x="150" y="30" font-family="Arial" font-size="24">V8 JS-Heap and Blink Oilpan Heap</text>
+
+          <!-- V8 JS-Heap Box -->
+          <rect x="100" y="100" width="200" height="150" fill="#ffcc00" stroke="#000" stroke-width="2" />
+          <text x="140" y="130" font-family="Arial" font-size="16">V8 JS-Heap</text>
+          <text x="110" y="160" font-family="Arial" font-size="14">- JavaScript Objects</text>
+          <text x="110" y="180" font-family="Arial" font-size="14">- Arrays</text>
+          <text x="110" y="200" font-family="Arial" font-size="14">- Functions</text>
+          <text x="110" y="220" font-family="Arial" font-size="14">- DOM Wrappers</text>
+
+          <!-- Arrow from V8 JS-Heap to Blink Oilpan Heap -->
+          <line x1="300" y1="175" x2="500" y2="175" stroke="#000" stroke-width="2" />
+          <polygon points="490,170 500,175 490,180" fill="#000" />
+          <text x="305" y="190" font-family="Arial" font-size="12">Wrapper Object refs DOM Element</text>
+
+          <!-- Blink Oilpan Heap Box -->
+          <rect x="500" y="100" width="200" height="150" fill="#00ccff" stroke="#000" stroke-width="2" />
+          <text x="520" y="130" font-family="Arial" font-size="16">Blink Oilpan Heap</text>
+          <text x="510" y="160" font-family="Arial" font-size="14">- DOM Nodes</text>
+          <text x="510" y="180" font-family="Arial" font-size="14">- Layout Objects</text>
+          <text x="510" y="200" font-family="Arial" font-size="14">- Render Objects</text>
+        </svg>
+
+
+      </section>
+
+    </main>
+    <%- include('partials/footer.ejs') %>
+</body>
+
+</html>

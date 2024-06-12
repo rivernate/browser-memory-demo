@@ -1,98 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Discardable Memory Example</title>
+    <meta charset="UTF-8">
+    <title>Discardable Memory Example</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        .heap-size {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
 </head>
-
 <body>
-  <h1>Discardable Memory Example</h1>
-  <p>
-    Memory allocated by the discardable memory system.
-    Designed to be freeable by the system at any time (under memory pressure).
-    In most cases, only pinned discardable memory should be considered to have a cost;
-    however, the implementation of discardable memory is platform dependent,
-    and on certain platforms unpinned memory can contribute to memory pressure to some degree.
-  </p>
-  <h2>Instructions for Using chrome://tracing</h2>
-  <ol>
-    <li>Open a new tab in Chrome and navigate to <code>chrome://tracing</code>.</li>
-    <li>
-      Start recording:
-      <ul>
-        <li>Click on "Record" or press Ctrl+R.</li>
-        <li>In the "Categories" tab, select <code>Manually select settings</code> and ensure only
-          <code>memory-infra</code> is checked</li>
-        <li>Click on "Record" to start capturing the trace.</li>
-      </ul>
-    </li>
-    <li>
-      Interact with the page:
-      <ul>
-        <li>Load this page in another tab (<code>http://localhost:3000/discardable</code> if you're following the
-          directory structure from the earlier setup).</li>
-        <li>Click on the "Load Images" button to load the images.</li>
-        <li>Wait for a few seconds to ensure all images are loaded.</li>
-        <li>Click on the "Discard Images" button to remove the images.</li>
-      </ul>
-    </li>
-    <li>
-      Stop recording:
-      <ul>
-        <li>Switch back to the <code>chrome://tracing</code> tab.</li>
-        <li>Click on "Stop" to end the trace recording.</li>
-      </ul>
-    </li>
-    <li>
-      Analyze the trace:
-      <ul>
-        <li>Look for memory usage patterns in the trace.</li>
-        <li>Identify the moments when images are loaded and discarded.</li>
-        <li>Check the <code>discardable</code> memory category to see how the memory is used and released.</li>
-      </ul>
-    </li>
-  </ol>
-
-  <h3>Notes</h3>
-  <ul>
-    <li><strong>Number of Images:</strong> The example loads 1000 images to ensure noticeable memory usage. Adjust the
-      number of images if needed.</li>
-    <li><strong>Placeholders:</strong> The example uses placeholder images from an external service to simulate real
-      image loading.</li>
-  </ul>
-  <h2> Run Test </h2>
-  <button id="load-images">Load Images</button>
-  <button id="discard-images">Discard Images</button>
-  <div id="image-container"></div>
-
-  <script>
-    const imageContainer = document.getElementById('image-container');
-    const loadImagesButton = document.getElementById('load-images');
-    const discardImagesButton = document.getElementById('discard-images');
-
-    const imageCount = 1000;
-    let images = [];
-
-    loadImagesButton.addEventListener('click', () => {
-      for (let i = 0; i < imageCount; i++) {
-        const img = document.createElement('img');
-        img.src = `https://via.placeholder.com/300?text=Image+${i + 1}`;
-        imageContainer.appendChild(img);
-        images.push(img);
-      }
-      console.log(`Loaded ${imageCount} images.`);
-    });
-
-    discardImagesButton.addEventListener('click', () => {
-      images.forEach(img => {
-        imageContainer.removeChild(img);
-      });
-      images = [];
-      console.log(`Discarded ${imageCount} images.`);
-    });
-  </script>
-
+    <div class="container">
+        <h1>Discardable Memory Example</h1>
+        <div class="description">
+            <p>
+                Memory allocated by the discardable memory system. Designed to be freeable by the system at any time (under memory pressure). In most cases, only pinned discardable memory should be considered to have a cost; however, the implementation of discardable memory is platform dependent, and on certain platforms, unpinned memory can contribute to memory pressure to some degree.
+            </p>
+            <p>
+                This example loads a large number of images to simulate memory usage and then discards them to demonstrate how discardable memory can be managed.
+            </p>
+        </div>
+        <button id="load-images">Load Images</button>
+        <button id="discard-images">Discard Images</button>
+        <div id="output"></div>
+        <div id="heap-size" class="heap-size">Heap Size: N/A</div>
+        <div id="image-container"></div>
+    </div>
+    <script src="/js/discardable.js"></script>
 </body>
-
 </html>
+

@@ -3,6 +3,72 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    color: #343a40;
+}
+
+.container {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.section {
+    margin: 20px 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+}
+
+.list li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.list li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.list li:hover {
+    background-color: #e2e2e2;
+}
+
+footer {
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
 }
 
 h1 {
@@ -53,4 +119,3 @@ button:hover {
     color: #333;
     text-align: center;
 }
-

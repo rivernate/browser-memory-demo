@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add security headers for COOP and COEP
-app.use((req, res, next) => {
+app.use((_, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   next();
@@ -45,23 +45,23 @@ const memoryLeakTypes = [
   'third-party-libraries'
 ];
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_: Request, res: Response) => {
   res.render('index', { memoryAreas, memoryLeakTypes });
 });
 
 memoryAreas.forEach(area => {
-  app.get(`/${area}`, (req: Request, res: Response) => {
+  app.get(`/${area}`, (_: Request, res: Response) => {
     res.render(area);
   });
 });
 
 // Define routes for memory leak demonstrations
-app.get('/memory-leaks', (req: Request, res: Response) => {
+app.get('/memory-leaks', (_: Request, res: Response) => {
   res.render('memory-leaks', { memoryLeakTypes });
 });
 
 memoryLeakTypes.forEach(type => {
-  app.get(`/memory-leaks/${type}`, (req: Request, res: Response) => {
+  app.get(`/memory-leaks/${type}`, (_: Request, res: Response) => {
     res.render(`memory-leaks/${type}`);
   });
 });

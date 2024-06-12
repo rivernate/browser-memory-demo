@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>CC Memory Example</title>
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
         body {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
         }
 
         .box {
@@ -23,26 +26,57 @@
             50% { top: 200px; left: 200px; }
             100% { top: 0; left: 0; }
         }
+
+        .container {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .description {
+            text-align: left;
+            max-width: 600px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-width: 600px;
+        }
+        .heap-size {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
-    <h1>CC Memory Example</h1>
-    <div class="boxes">
-        <% for (let i = 0; i < 100; i++) { %>
-            <div class="box"></div>
-        <% } %>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const boxesContainer = document.querySelector('.boxes');
+    <div class="container">
+        <h1>CC Memory Example</h1>
+        <div class="description">
+            <p><strong>Explanation:</strong> This example demonstrates how creating and animating a large number of DOM elements can affect memory usage and stress the compositor (CC) in the browser.</p>
+            <p><strong>Example Code:</strong></p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const boxesContainer = document.querySelector('.boxes');
 
-            for (let i = 0; i < 100; i++) {
-                const box = document.createElement('div');
-                box.className = 'box';
-                boxesContainer.appendChild(box);
-            }
-        });
-    </script>
+    for (let i = 0; i < 100; i++) {
+        const box = document.createElement('div');
+        box.className = 'box';
+        boxesContainer.appendChild(box);
+    }
+});
+            </pre>
+        </div>
+        <button id="start-button">Start Leak</button>
+        <div id="output"></div>
+        <div id="heap-size" class="heap-size">Heap Size: N/A</div>
+    </div>
+    <div class="boxes"></div>
+    <script src="/js/cc.js"></script>
 </body>
 </html>
 
